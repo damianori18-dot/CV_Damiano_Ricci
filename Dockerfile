@@ -22,6 +22,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
     && a2enmod rewrite
 
+RUN printf 'upload_max_filesize=8M\npost_max_size=10M\n' > /usr/local/etc/php/conf.d/uploads.ini
+
 # Installa Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
