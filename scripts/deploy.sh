@@ -23,6 +23,16 @@ if [ -n "${MYSQL_ATTR_SSL_CA:-}" ]; then
 
         echo "MySQL CA certificate is readable and valid.\n";
     ' "$MYSQL_ATTR_SSL_CA"
+
+    MYSQL_ATTR_SSL_CA_RUNTIME_PATH="/tmp/mysql-ca.pem"
+    install -m 0644 "$MYSQL_ATTR_SSL_CA" "$MYSQL_ATTR_SSL_CA_RUNTIME_PATH"
+    if ! su -s /bin/sh www-data -c "test -r '$MYSQL_ATTR_SSL_CA_RUNTIME_PATH'"; then
+        echo "MySQL CA certificate is not readable by the Apache user." >&2
+        exit 1
+    fi
+
+    MYSQL_ATTR_SSL_CA="$MYSQL_ATTR_SSL_CA_RUNTIME_PATH"
+    export MYSQL_ATTR_SSL_CA
 fi
 
 echo "Esecuzione delle migrazioni del database..."
