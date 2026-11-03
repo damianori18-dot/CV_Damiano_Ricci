@@ -24,8 +24,9 @@ COPY . .
 # Installa le dipendenze di Composer
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# Configura i permessi per Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/vendor
+# Configura i permessi per Laravel in modo approfondito
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/vendor \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Cambia il DocumentRoot di Apache sulla cartella public di Laravel
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
