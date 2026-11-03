@@ -19,8 +19,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
+# 3b. Installa le dipendenze di Composer direttamente in fase di build
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
 # 4. Imposta i permessi corretti per Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/vendor
+
 
 # 5. Modifica la configurazione di Apache per puntare alla cartella /public di Laravel
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
