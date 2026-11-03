@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-echo "Generazione della cache di configurazione..."
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+
+echo "Pulizia di vecchie configurazioni e cache..."
+php artisan config:clear
+php artisan cache:clear
 
 echo "Esecuzione delle migrazioni del database..."
 php artisan migrate --force
+
+echo "Rigenerazione della cache ottimizzata..."
+php artisan route:cache
+php artisan view:cache
