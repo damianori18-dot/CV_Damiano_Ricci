@@ -75,6 +75,11 @@
       z-index: 1;
   }
 
+  nav.navbar {
+      position: relative;
+      z-index: 1030;
+  }
+
   #projects {
       position: relative;
       z-index: 1;

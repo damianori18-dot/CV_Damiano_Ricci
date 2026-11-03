@@ -29,12 +29,6 @@
                             @enderror
                         </div>
 
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" id="remember" name="remember"
-                                value="1" @checked(old('remember'))>
-                            <label class="form-check-label color-p" for="remember">Ricordami</label>
-                        </div>
-
                         <button type="submit" class="btn btn-outline-light">Accedi</button>
                     </form>
 

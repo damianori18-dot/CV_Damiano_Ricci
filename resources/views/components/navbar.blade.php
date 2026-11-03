@@ -8,7 +8,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-             <ul class="navbar-nav ms-auto align-items-lg-center">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" aria-current="page"
                         href="{{ route('home') }}">Home</a>
@@ -17,19 +17,47 @@
                     <a class="nav-link {{ request()->routeIs('projects.index') ? 'active' : '' }}" aria-current="page"
                         href="{{ route('projects.index') }}">Progetti</a>
                 </li>
+                @auth
+                    @if (auth()->user()->isAdmin)
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('projects.create') ? 'active' : '' }}"
+                                aria-current="page" href="{{ route('projects.create') }}">FormProgetti</a>
+                        </li>
+                    @endif
+                @endauth
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('projects.create') ? 'active' : '' }}" aria-current="page"
-                        href="{{ route('projects.create') }}">FormProgetti</a>
+                    <a class="nav-link" aria-current="page" href="https://github.com/damianori18-dot?tab=repositories"
+                        target="_blank">GitHub</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page"
-                        href="https://github.com/damianori18-dot?tab=repositories" target="_blank">GitHub</a>
+                        href="https://www.linkedin.com/in/damiano-ricci-junior-web-developer/"
+                        target="_blank">LinkedIn</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page"
-                        href="https://www.linkedin.com/in/damiano-ricci-junior-web-developer/" target="_blank">LinkedIn</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        @auth
+                            Ciao {{ auth()->user()->name }}!
+                        @else
+                            Login/Register
+                        @endauth
+                    </a>
+                    <ul class="dropdown-menu">
+                        @guest
+                            <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
+                            <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
+                        @else
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        @endguest
+                    </ul>
                 </li>
-            </ul> 
+            </ul>
 
         </div>
     </div>

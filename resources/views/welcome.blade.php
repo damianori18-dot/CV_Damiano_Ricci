@@ -73,6 +73,8 @@
                 <div class="col-12 col-lg-4 mb-4">
                     <article class="card-custom project-card p-4 h-100">
                         <h3 class="h3 color-a google-sans-code fw-bold project-card-title">{{ $project->title }}</h3>
+                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}"
+                        class="img-fluid rounded mb-3">
                         @if ($project->tags->isNotEmpty())
                             <ul class="project-tags list-unstyled d-flex flex-wrap gap-2 mb-3">
                                 @foreach ($project->tags as $tag)
@@ -80,8 +82,6 @@
                                 @endforeach
                             </ul>
                         @endif
-                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}"
-                            class="img-fluid rounded mb-3">
                         <p class="color-p mt-3 project-card-description">{{ $project->description }}</p>
                         <div class="project-card-actions">
                             <button type="button"
@@ -103,22 +103,22 @@
             @endforelse
         </div>
 
-        <div class="modal fade" id="projectDescriptionModal" tabindex="-1"
-            aria-labelledby="projectDescriptionModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title h5 color-a google-sans-code fw-bold" id="projectDescriptionModalTitle">
-                        </h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="color-p mb-0" id="projectDescriptionModalText"></p>
-                    </div>
+    </section>
+    <div class="modal fade" id="projectDescriptionModal" tabindex="-1"
+        aria-labelledby="projectDescriptionModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 color-a google-sans-code fw-bold" id="projectDescriptionModalTitle">
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="color-p mb-0" id="projectDescriptionModalText"></p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
     <section>
 
     </section>
