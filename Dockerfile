@@ -1,6 +1,6 @@
-FROM php:8.2-apache
+FROM php:8.5-apache
 
-# 1. Installa le estensioni PHP necessarie per Laravel e MySQL
+# Installa le estensioni PHP necessarie per Laravel e MySQL
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
@@ -12,24 +12,25 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
     && a2enmod rewrite
 
-# 2. Installa Composer
+# Installa Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 3. Copia i file del progetto dentro il server Apache
+# Imposta la cartella di lavoro
 WORKDIR /var/www/html
+
+# Copia i file nel container
 COPY . .
 
-# 3b. Installa le dipendenze di Composer direttamente in fase di build
+# Installa le dipendenze di Composer
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# 4. Imposta i permessi corretti per Laravel
+# Configura i permessi per Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/vendor
 
-
-# 5. Modifica la configurazione di Apache per puntare alla cartella /public di Laravel
+# Cambia il DocumentRoot di Apache sulla cartella public di Laravel
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# 6. Avvia lo script di deploy che abbiamo creato prima e poi avvia Apache
+# Comando di avvio che esegue lo script e avvia Apache
 CMD ["sh", "-c", "./scripts/deploy.sh && apache2-foreground"]
