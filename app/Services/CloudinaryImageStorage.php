@@ -41,7 +41,7 @@ class CloudinaryImageStorage
                 ->post($endpoint, [
                     ...$parameters,
                     'api_key' => $apiKey,
-                    'signature' => hash_hmac('sha1', $signatureString, $apiSecret),
+                    'signature' => sha1($signatureString.$apiSecret),
                 ]);
         } catch (ConnectionException $exception) {
             Log::error('Cloudinary image upload could not connect.', [

@@ -55,11 +55,7 @@ test('new project images are uploaded to Cloudinary and the returned URL is save
             return false;
         }
 
-        $signature = hash_hmac(
-            'sha1',
-            'folder=projects&timestamp='.$timestamp,
-            'test-secret',
-        );
+        $signature = sha1('folder=projects&timestamp='.$timestamp.'test-secret');
 
         return str_ends_with($request->url(), '/image/upload')
             && str_contains($body, "name=\"folder\"\r\n\r\nprojects")
