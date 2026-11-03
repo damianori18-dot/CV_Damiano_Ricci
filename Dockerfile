@@ -33,5 +33,6 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 # Comando di avvio che esegue lo script e avvia Apache
-CMD ["sh", "-c", "apache2-foreground & sleep 5 && ./scripts/deploy.sh"]
+CMD ["sh", "-c", "./scripts/deploy.sh && apache2-foreground"]
+
 
