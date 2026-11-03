@@ -1,5 +1,11 @@
 <?php
 
+// Forza la correzione dell'host se caricato in ambiente di produzione su Render
+if (isset($_ENV['DB_HOST']) && str_contains($_ENV['DB_HOST'], 'aivencloud')) {
+    $_ENV['DB_HOST'] = '://aivencloud.com';
+    putenv('DB_HOST=://aivencloud.com');
+}
+
 use Illuminate\Support\Str;
 use Pdo\Mysql;
 
