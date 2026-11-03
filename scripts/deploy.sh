@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+echo "Configurazione permessi cartelle storage..."
+chmod -R 777 /var/www/html/storage
+chmod -R 777 /var/www/html/bootstrap/cache
+
 echo "Pulizia di vecchie configurazioni e cache..."
 php artisan config:clear
 php artisan cache:clear
