@@ -1,11 +1,5 @@
 <?php
 
-// Forza la correzione dell'host se caricato in ambiente di produzione su Render
-if (isset($_ENV['DB_HOST']) && str_contains($_ENV['DB_HOST'], 'aivencloud')) {
-    $_ENV['DB_HOST'] = '://aivencloud.com';
-    putenv('DB_HOST=://aivencloud.com');
-}
-
 use Illuminate\Support\Str;
 use Pdo\Mysql;
 
@@ -66,7 +60,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                1012 => env('MYSQL_ATTR_SSL_CA', true),
+                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 
@@ -155,7 +149,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')) . '-database-'),
+            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
