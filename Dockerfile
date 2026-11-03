@@ -1,4 +1,4 @@
-FROM php:8.5-apache
+FROM php:8.3-apache
 
 # Installa le estensioni PHP necessarie per Laravel e MySQL
 RUN apt-get update && apt-get install -y \
