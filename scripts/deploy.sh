@@ -8,6 +8,10 @@ chmod -R 775 /var/www/html/bootstrap/cache
 echo "Pulizia della cache di configurazione..."
 php artisan config:clear
 
+echo "Preparazione dello storage pubblico..."
+mkdir -p /var/www/html/storage/app/public
+php artisan storage:link --force
+
 if [ -n "${MYSQL_ATTR_SSL_CA:-}" ]; then
     if [ ! -r "$MYSQL_ATTR_SSL_CA" ]; then
         echo "MySQL CA certificate is missing or unreadable at the configured path." >&2

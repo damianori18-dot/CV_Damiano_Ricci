@@ -73,8 +73,10 @@
                 <div class="col-12 col-lg-4 mb-4">
                     <article class="card-custom project-card p-4 h-100">
                         <h3 class="h3 color-a google-sans-code fw-bold project-card-title">{{ $project->title }}</h3>
-                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}"
-                        class="img-fluid rounded mb-3">
+                        @if ($project->imageUrl())
+                            <img src="{{ $project->imageUrl() }}" alt="{{ $project->title }}"
+                                class="img-fluid rounded mb-3">
+                        @endif
                         @if ($project->tags->isNotEmpty())
                             <ul class="project-tags list-unstyled d-flex flex-wrap gap-2 mb-3">
                                 @foreach ($project->tags as $tag)

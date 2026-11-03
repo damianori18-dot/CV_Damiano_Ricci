@@ -5,8 +5,10 @@
         @forelse ($projects as $project)
             <article class="card-custom mb-4 p-4">
                 <h2 class="h3 color-a google-sans-code fw-bold">{{ $project->title }}</h2>
-                <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}"
-                class="img-fluid rounded mb-3">
+                @if ($project->imageUrl())
+                    <img src="{{ $project->imageUrl() }}" alt="{{ $project->title }}"
+                        class="img-fluid rounded mb-3">
+                @endif
                 @if ($project->tags->isNotEmpty())
                     <ul class="project-tags list-unstyled d-flex flex-wrap gap-2 mb-3">
                         @foreach ($project->tags as $tag)
@@ -18,6 +20,13 @@
                 <div class="project-card-actions">
                     <a href="{{ $project->github_url }}" class="project-card-action-link" target="_blank"
                         rel="noopener noreferrer">GitHub</a>
+                    @auth
+                        @if (auth()->user()->isAdmin)
+                            <a href="{{ route('projects.edit', $project) }}" class="project-card-action-link">
+                                Modifica progetto
+                            </a>
+                        @endif
+                    @endauth
                 </div>
             </article>
         @empty

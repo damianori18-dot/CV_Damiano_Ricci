@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Tag;
+use App\Services\CloudinaryImageStorage;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,10 +15,11 @@ class ProjectController extends Controller
     {
         return view('formAdmin', [
             'tags' => Tag::query()->orderBy('id')->get(),
+            'project' => null,
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, CloudinaryImageStorage $imageStorage): RedirectResponse
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -29,7 +31,7 @@ class ProjectController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('projects', 'public');
+            $validated['image'] = $imageStorage->upload($request->file('image'));
         }
 
         $selectedTags = $validated['tags'] ?? [];
@@ -39,6 +41,40 @@ class ProjectController extends Controller
         $project->tags()->sync($selectedTags);
 
         return redirect()->route('projects.create');
+    }
+
+    public function edit(Project $project): View
+    {
+        return view('formAdmin', [
+            'project' => $project->load('tags'),
+            'tags' => Tag::query()->orderBy('id')->get(),
+        ]);
+    }
+
+    public function update(Request $request, Project $project, CloudinaryImageStorage $imageStorage): RedirectResponse
+    {
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'github_url' => ['nullable', 'url', 'max:255'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $imageStorage->upload($request->file('image'));
+        } else {
+            unset($validated['image']);
+        }
+
+        $selectedTags = $validated['tags'] ?? [];
+        unset($validated['tags']);
+
+        $project->update($validated);
+        $project->tags()->sync($selectedTags);
+
+        return redirect()->route('projects.index');
     }
 
     public function index(): View
